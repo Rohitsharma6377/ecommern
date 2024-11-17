@@ -6,8 +6,8 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      "/api/": "http://localhost:5000",
-      "/uploads/": "http://localhost:5000",
+      "/api/": "https://sachinmobile.onrender.com/api/",
+      "/uploads/": "https://sachinmobile.onrender.com/api",
     },
   },
 });

@@ -9,15 +9,15 @@ const Home = () => {
   const { keyword } = useParams();
   const { data, isLoading, isError } = useGetProductsQuery({ keyword });
 
+  const errorMessage = isError?.data?.message || isError?.error || "An error occurred";
+
   return (
     <>
       {!keyword ? <Header /> : null}
       {isLoading ? (
         <Loader />
       ) : isError ? (
-        <Message variant="danger">
-          {isError?.data.message || isError.error}
-        </Message>
+        <Message variant="danger">{errorMessage}</Message>
       ) : (
         <>
           <div className="flex justify-between items-center">
