@@ -1,6 +1,9 @@
 import { apiSlice } from "./apiSlice";
 import { USERS_URL } from "../constants";
 
+// Helper function to get the token from localStorage
+const getToken = () => localStorage.getItem("token");
+
 export const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation({
@@ -33,6 +36,9 @@ export const userApiSlice = apiSlice.injectEndpoints({
     getUsers: builder.query({
       query: () => ({
         url: USERS_URL,
+        headers: {
+          Authorization: `Bearer ${getToken()}`, // Add token to the headers
+        },
       }),
       providesTags: ["User"],
       keepUnusedDataFor: 5,
@@ -41,11 +47,17 @@ export const userApiSlice = apiSlice.injectEndpoints({
       query: (userId) => ({
         url: `${USERS_URL}/${userId}`,
         method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${getToken()}`, // Add token to the headers
+        },
       }),
     }),
     getUserDetails: builder.query({
       query: (id) => ({
         url: `${USERS_URL}/${id}`,
+        headers: {
+          Authorization: `Bearer ${getToken()}`, // Add token to the headers
+        },
       }),
       keepUnusedDataFor: 5,
     }),
@@ -54,6 +66,9 @@ export const userApiSlice = apiSlice.injectEndpoints({
         url: `${USERS_URL}/${data.userId}`,
         method: "PUT",
         body: data,
+        headers: {
+          Authorization: `Bearer ${getToken()}`, // Add token to the headers
+        },
       }),
       invalidatesTags: ["User"],
     }),

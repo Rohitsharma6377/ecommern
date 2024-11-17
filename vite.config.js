@@ -6,8 +6,20 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      "/api/": "https://sachinmobile.onrender.com/api/",
-      "/uploads/": "https://sachinmobile.onrender.com/api",
+      // Proxy API requests
+      "/api": {
+        target: "https://sachinmobile.onrender.com",
+        changeOrigin: true,
+        secure: true, // Set to false if using self-signed certificates
+        rewrite: (path) => path.replace(/^\/api/, "/api"),
+      },
+      // Proxy Uploads
+      "/uploads": {
+        target: "https://sachinmobile.onrender.com",
+        changeOrigin: true,
+        secure: true,
+        rewrite: (path) => path.replace(/^\/uploads/, "/uploads"),
+      },
     },
   },
 });

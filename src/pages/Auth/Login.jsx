@@ -23,7 +23,12 @@ const Login = () => {
 
   useEffect(() => {
     if (userInfo) {
-      navigate(redirect);
+      // Check if the user is an admin
+      if (userInfo.role === "admin") {
+        navigate("/admin");
+      } else {
+        navigate(redirect);
+      }
     }
   }, [navigate, redirect, userInfo]);
 
@@ -33,7 +38,12 @@ const Login = () => {
       const res = await login({ email, password }).unwrap();
       console.log(res);
       dispatch(setCredentials({ ...res }));
-      navigate(redirect);
+      // Check if the user is an admin
+      if (res.role === "admin") {
+        navigate("/admin"); // Redirect to the admin page
+      } else {
+        navigate(redirect); // Otherwise, redirect to the original page
+      }
     } catch (err) {
       toast.error(err?.data?.message || err.error);
     }
@@ -105,7 +115,7 @@ const Login = () => {
         </div>
         <img
           src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1964&q=80"
-          alt=""
+          alt="Login"
           className="h-[65rem] w-[59%] xl:block md:hidden sm:hidden rounded-lg"
         />
       </section>
