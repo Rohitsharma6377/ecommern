@@ -1,12 +1,12 @@
 import React from 'react'
 
-const Products = () => {
+const AdminProducts = () => {
   return (
     <div>
-        products
+        Adminproducts
       
     </div>
   )
 }
 
-export default Products;
+export default AdminProducts;

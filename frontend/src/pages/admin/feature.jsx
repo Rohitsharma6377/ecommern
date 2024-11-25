@@ -1,12 +1,12 @@
 import React from 'react'
 
-const feature = () => {
+const Adminfeature = () => {
   return (
     <div>
-      features
+      Adminfeatures
       
     </div>
   )
 }
 
-export default feature;
+export default Adminfeature;
