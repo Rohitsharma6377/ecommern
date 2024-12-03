@@ -5,6 +5,7 @@ export const registerFormControls = [
         type : 'text',
         palceholder  : 'Enter your userName',
         componentType :'input',
+        option :[],
         
 
     },
