@@ -2,7 +2,7 @@ const cookieParser = require('cookie-parser');
 const express = require('express');
 const mongoose = require ('mongoose');
 const cors = require('cors');
-
+const authRouter = require('./routes/auth/auth-routes');
 
 mongoose.connect('mongodb+srv://lavish637728:lavish637728@sachinecom.uragf.mongodb.net/').then(()=>
     console.log("connected to database")).catch(error =>(console.log(error))
@@ -29,5 +29,5 @@ app.use(
 
 app.use(cookieParser());
 app.use(express.json());
-
+app.use('/api/auth' , authRouter);
 app.listen(PORT , ()=>console.log(`server is running on ${PORT}`))

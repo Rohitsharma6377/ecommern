@@ -1,26 +1,42 @@
 import Commonform from '@/components/common/form';
-import React, { useState } from 'react'
+import { registerFormControls } from '@/config';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const initialState = {
-  userName : '',
-  email :"",
-  password: "",
-}
-const AuthRegister = () => {
+  userName: '',
+  email: '',
+  password: '',
+};
 
-  const [formData , setFormData] = useState(initialState)
+function onSubmit(event) {
+  event.preventDefault();
+  // Add your form submission logic here
+}
+
+const AuthRegister = () => {
+  const [formData, setFormData] = useState(initialState);
+
   return (
-    <div className='mx-auto w-full max-w-md space-y-6'> 
+    <div className="mx-auto w-full max-w-md space-y-6">
       <div className="text-center">
         <h1>Sign Up</h1>
-        <p>Already have an account
-<Link to='/auth/login'>Login</Link>
+        <p>
+          Already have an account?{' '}
+          <Link to="/auth/login" className="text-blue-500 underline">
+            Login
+          </Link>
         </p>
       </div>
-      <Commonform formData={formData} setFormData={setFormData} />
+      <Commonform
+        registerFormControls={registerFormControls}
+        buttonText="Create Account"
+        formData={formData}
+        setFormData={setFormData}
+        onSubmit={onSubmit}
+      />
     </div>
-  )
-}
+  );
+};
 
 export default AuthRegister;
