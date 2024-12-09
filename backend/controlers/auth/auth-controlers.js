@@ -4,29 +4,33 @@ const User = require('../../models/Users')
 
 //register
 
-const registerUser = async(req, res)=>{
-    const {userName , email , password} = req.body;
-        const hashPassword = await bcrypt.hash(password, 12)
-        const newUser = new User({
-            userName , email ,password: hashPassword
-        })
-        await newUser.save()
-        res.status(200).json({
-            success: true,
-            message : "User created successfully"
-        })
-
-    try{
-
-    }catch(e){
-        console.log(e);
-        res.status(500).json({
-            success:false,
-            message:'Some error occured'
-        })
+const registerUser = async (req, res) => {
+    console.log(req.body); // Add this to inspect the incoming data
+    try {
+      const { userName, email, password } = req.body;
+  
+      // Validate if email and password are provided
+      if (!email || !password) {
+        return res.status(400).json({ message: "Email and password are required" });
+      }
+  
+      // Check if the user already exists
+      const existingUser = await User.findOne({ email });
+      if (existingUser) {
+        return res.status(400).json({ message: "Email already exists" });
+      }
+  
+      const newUser = new User({ userName, email, password });
+      await newUser.save();
+  
+      res.status(201).json({ message: "User registered successfully", user: newUser });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Server error" });
     }
-}
-
+};
+  
+  
 //login
 
 //logout

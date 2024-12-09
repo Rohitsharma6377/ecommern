@@ -1,7 +1,9 @@
 import Commonform from '@/components/common/form';
 import { registerFormControls } from '@/config';
+import { registerUserAction } from '@/store/auth-slice';
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 
 const initialState = {
   userName: '',
@@ -9,13 +11,24 @@ const initialState = {
   password: '',
 };
 
-function onSubmit(event) {
-  event.preventDefault();
-  // Add your form submission logic here
-}
 
 const AuthRegister = () => {
   const [formData, setFormData] = useState(initialState);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    
+    // Use formData to get the values for email, password, and userName
+    const { email, password, userName } = formData;
+
+    // Dispatch the action with formData
+    dispatch(registerUserAction({ email, password, userName }));
+
+    // Optionally, navigate to another page after registration (e.g., to login)
+    navigate('/auth/login');
+  };
 
   return (
     <div className="mx-auto w-full max-w-md space-y-6">
