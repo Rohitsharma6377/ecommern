@@ -6,7 +6,7 @@ require('dotenv').config();
 const authRouter = require('./routes/auth/auth-routes');
 
 // Using environment variables for sensitive credentials
-const DB_URI = process.env.DB_URI || 'mongodb+srv://lavish637728:lavish637728@sachinecom.uragf.mongodb.net/';
+const DB_URI = process.env.DB_URI || '';
 
 mongoose.connect(DB_URI)
   .then(() => console.log("Connected to database"))
