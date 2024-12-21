@@ -5,28 +5,32 @@ const CheckAuth = ({ isAuthenticated, user, children }) => {
   const location = useLocation();
 
   // Redirect unauthenticated users away from protected routes
-  if (
-    !isAuthenticated &&
-    !(location.pathname.includes('/login') || location.pathname.includes('/register'))
-  ) {
-    return <Navigate to="/auth/login" />;
+  if (!isAuthenticated && !['/login', '/register'].some(path => location.pathname.includes(path))) {
+    return <Navigate to="/auth/login" state={{ from: location }} replace />;
   }
 
   // Redirect authenticated users away from auth pages to their respective dashboards
-  if (isAuthenticated && (location.pathname.includes('/login') || location.pathname.includes('/register'))) {
-    if (user?.role === 'admin') {
-      return <Navigate to="/admin/dashboard" />;
-    } else {
-      return <Navigate to="/shop/home" />;
+  if (isAuthenticated) {
+    if (['/login', '/register'].some(path => location.pathname.includes(path))) {
+      return user?.role === 'admin' ? (
+        <Navigate to="/admin/dashboard" replace />
+      ) : (
+        <Navigate to="/shop/home" replace />
+      );
+    }
+
+    // Redirect non-admin users trying to access admin pages
+    if (user?.role !== 'admin' && location.pathname.includes('/admin')) {
+      return <Navigate to="/un-authpage" replace />;
+    }
+
+    // Redirect admin users away from shop routes
+    if (user?.role === 'admin' && location.pathname.includes('/shop')) {
+      return <Navigate to="/admin/dashboard" replace />;
     }
   }
-  if(isAuthenticated && user?.role !== 'admin' && location.pathname.includes('admin')){
-    return <Navigate to="/un-authpage"/>;
-  }
-  if(isAuthenticated && user?.role === 'admin' && location.pathname.includes('shop')){
-    return <Navigate to="/admin/dashboard"/>
-  }
-  // If no redirection is needed, render the wrapped content (children)
+
+  // Render the wrapped content (children) if no redirection is needed
   return children;
 };
 

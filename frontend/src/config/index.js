@@ -1,51 +1,41 @@
 export const registerFormControls = [
     {
-        name : 'userName',
-        label : 'User Name',
-        type : 'text',
-        palceholder  : 'Enter your userName',
-        componentType :'input',
-        option :[],
-        
-
+        name: 'userName', // changed from 'userName' instead of 'User Name'
+        label: 'User Name',
+        type: 'text',
+        placeholder: 'Enter your userName',
+        componentType: 'input',
+        option: [],
     },
     {
-        name : 'Email',
-        label : 'Email',
-        type : 'email',
-        palceholder  : 'Enter your Email',
-        componentType :'input',
-
-
+        name: 'email', // changed 'Email' to 'email' to match formData
+        label: 'Email',
+        type: 'email',
+        placeholder: 'Enter your Email',
+        componentType: 'input',
     },
     {
-        name : 'Password',
-        label : 'Password',
-        type : 'password',
-        palceholder  : 'Enter your Password',
-        componentType :'input',
-
-
-    }
+        name: 'password', // changed 'Password' to 'password'
+        label: 'Password',
+        type: 'password',
+        placeholder: 'Enter your Password',
+        componentType: 'input',
+    },
 ];
+
 export const loginFormControls = [
-    
     {
-        name : 'Email',
-        label : 'Email',
-        type : 'email',
-        palceholder  : 'Enter your Email',
-        componentType :'input',
-
-
+        name: 'Email',
+        label: 'Email',
+        type: 'email',
+        placeholder: 'Enter your Email',
+        componentType: 'input',
     },
     {
-        name : 'Password',
-        label : 'Password',
-        type : 'password',
-        palceholder  : 'Enter your Password',
-        componentType :'input',
-
-
-    }
-]
+        name: 'Password',
+        label: 'Password',
+        type: 'password',
+        placeholder: 'Enter your Password',
+        componentType: 'input',
+    },
+];
