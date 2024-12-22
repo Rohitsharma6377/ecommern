@@ -72,11 +72,21 @@ const Category = require('../models/categoryModel');
 // Create a new category
 exports.createCategory = async (req, res) => {
   try {
-    const { name, description } = req.body;
-    const newCategory = await Category.create({ name, description });
-    res.status(201).json(newCategory);
+      const { name, visible } = req.body;
+
+      // Validate input
+      if (!name || typeof visible === 'undefined') {
+          return res.status(400).json({ message: 'Name and visibility are required.' });
+      }
+
+      // Create new category
+      const newCategory = new Category({ name, visible });
+      await newCategory.save();
+
+      res.status(201).json(newCategory);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+      console.error(error);
+      res.status(500).json({ message: 'Server Error' });
   }
 };
 

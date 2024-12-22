@@ -1,17 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  fetchCategories,
-  addCategory,
-  updateCategory,
-  deleteCategory,
-  toggleCategoryVisibility,
-} from '../redux/categorySlice';
+import { fetchCategories, addCategory, updateCategory, deleteCategory, toggleCategoryVisibility } from '../redux/categorySlice';
 import AdminSidebar from '../components/AdminSidebar';
 
 const AdminCategories = () => {
   const dispatch = useDispatch();
-  const { categories, loading, error } = useSelector((state) => state.category);
+  const { categories, loading, error } = useSelector((state) => state.category || {});  // Safe fallback to empty object
   const [currentCategory, setCurrentCategory] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
@@ -26,22 +20,18 @@ const AdminCategories = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if (!formData.name.trim()) {
-      alert('Category name is required.');
-      return;
-    }
-
+    console.log('Form data:', formData); // Log to ensure it's correct
     if (currentCategory) {
-      await dispatch(updateCategory({ id: currentCategory._id, updates: formData }));
+      dispatch(updateCategory({ id: currentCategory._id, updates: formData }));
     } else {
-      await dispatch(addCategory(formData));
+      dispatch(addCategory(formData));
     }
-
     setCurrentCategory(null);
     setFormData({ name: '', visible: true });
   };
+  
 
   const handleEdit = (category) => {
     setCurrentCategory(category);
@@ -62,18 +52,17 @@ const AdminCategories = () => {
   };
 
   if (loading) {
-    return <p>Loading categories...</p>;
+    return <div>Loading...</div>;
   }
 
   if (error) {
-    return <p className="text-red-500">Error: {error}</p>;
+    return <div>Error: {error}</div>;
   }
 
   return (
     <div className="flex h-screen">
       <AdminSidebar />
       <div className="flex-grow bg-gray-100 p-8">
-        {/* Form Section */}
         <div className="bg-white shadow-md rounded p-6">
           <h1 className="text-2xl font-bold mb-4">
             {currentCategory ? 'Edit Category' : 'Add New Category'}
@@ -100,52 +89,45 @@ const AdminCategories = () => {
           </form>
         </div>
 
-        {/* Category List */}
         <div className="mt-8">
           <h2 className="text-xl font-bold mb-4">Category List</h2>
           <div className="bg-white shadow-md rounded">
-            {categories.length === 0 ? (
-              <p className="text-gray-500 p-4">No categories available.</p>
-            ) : (
-              <ul className="divide-y divide-gray-200">
-                {categories.map((category) => (
-                  <li key={category._id} className="p-4 flex items-center justify-between">
-                    <div>
-                      <p className="font-semibold text-gray-700">
-                        {category.name}
-                        {!category.visible && (
-                          <span className="ml-2 text-red-500 text-sm">(Hidden)</span>
-                        )}
-                      </p>
-                    </div>
-                    <div className="flex space-x-2">
-                      <button
-                        onClick={() => handleEdit(category)}
-                        className="py-1 px-3 bg-primary text-black text-sm rounded shadow hover:bg-primary-dark"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => handleDelete(category._id)}
-                        className="py-1 px-3 bg-red-500 text-black text-sm rounded shadow hover:bg-red-700"
-                      >
-                        Delete
-                      </button>
-                      <button
-                        onClick={() => handleToggleVisibility(category._id, category.visible)}
-                        className={`py-1 px-3 text-sm rounded shadow ${
-                          category.visible
-                            ? 'bg-gray-300 hover:bg-gray-400'
-                            : 'bg-green-500 hover:bg-green-700'
-                        }`}
-                      >
-                        {category.visible ? 'Hide' : 'Show'}
-                      </button>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            )}
+            <ul className="divide-y divide-gray-200">
+              {categories?.map((category) => (
+                <li key={category._id} className="p-4 flex items-center justify-between">
+                  <div>
+                    <p className="font-semibold text-gray-700">
+                      {category.name}
+                      {!category.visible && (
+                        <span className="ml-2 text-red-500 text-sm">(Hidden)</span>
+                      )}
+                    </p>
+                  </div>
+                  <div className="flex space-x-2">
+                    <button
+                      onClick={() => handleEdit(category)}
+                      className="py-1 px-3 bg-primary text-black text-sm rounded shadow hover:bg-primary-dark"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(category._id)}
+                      className="py-1 px-3 bg-red-500 text-black text-sm rounded shadow hover:bg-red-700"
+                    >
+                      Delete
+                    </button>
+                    <button
+                      onClick={() => handleToggleVisibility(category._id, category.visible)}
+                      className={`py-1 px-3 text-sm rounded shadow ${
+                        category.visible ? 'bg-gray-300 hover:bg-gray-400' : 'bg-green-500 hover:bg-green-700'
+                      }`}
+                    >
+                      {category.visible ? 'Hide' : 'Show'}
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </div>

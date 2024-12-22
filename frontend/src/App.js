@@ -11,7 +11,7 @@ import OrderPage from './pages/OrderPage';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminProducts from './pages/AdminProducts';
 import AdminUsers from './pages/AdminUsers';
-import AdminCategory from './pages/AdminCategory';
+import AdminCategories from './pages/AdminCategories';
 import PrivateRoute from './components/PrivateRoute';
 
 function App() {
@@ -30,7 +30,7 @@ function App() {
             <Route path="/order/:id" element={<PrivateRoute><OrderPage /></PrivateRoute>} />
             <Route path="/admin" element={<PrivateRoute><AdminDashboard /></PrivateRoute>} />
             <Route path="/admin/products" element={<PrivateRoute><AdminProducts /></PrivateRoute>} />
-            <Route path="/admin/products/categories" element={<PrivateRoute><AdminCategory /></PrivateRoute>} />
+            <Route path="/admin/products/categories" element={<PrivateRoute><AdminCategories /></PrivateRoute>} />
             <Route path="/admin/users" element={<PrivateRoute><AdminUsers /></PrivateRoute>} />
           </Routes>
         </main>

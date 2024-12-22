@@ -1,7 +1,8 @@
+// categorySlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import axios from '../api/axios';  // Use the custom axios instance
 
-const API_URL = '/api/categories';
+const API_URL = '/categories'; // This will work with baseURL set in axios instance
 
 // Fetch all categories
 export const fetchCategories = createAsyncThunk('category/fetchAll', async () => {
@@ -10,7 +11,7 @@ export const fetchCategories = createAsyncThunk('category/fetchAll', async () =>
 });
 
 // Add a new category
-export const addCategory = createAsyncThunk('category/add', async (categoryData) => {
+export const addCategory = createAsyncThunk('/', async (categoryData) => {
   const response = await axios.post(API_URL, categoryData);
   return response.data;
 });
