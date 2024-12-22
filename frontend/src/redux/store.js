@@ -13,6 +13,6 @@ export default configureStore({
     cart: cartReducer,
     admin: adminReducer,
     order: orderReducer,
-    category: categoryReducer,  // Changed from 'categories' to 'category'
+    categories: categoryReducer, // Use 'categories' to match the expected selector
   },
 });

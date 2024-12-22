@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom'; // For React 17 and below
 import './index.css';
 import App from './App';
 import { Provider } from 'react-redux';
@@ -8,9 +8,21 @@ import { setUserInfo } from './redux/userSlice';
 import setAuthToken from './utils/setAuthToken';
 
 const token = localStorage.getItem('userToken');
+const userInfo = localStorage.getItem('userInfo');
+
 if (token) {
   setAuthToken(token);
-  store.dispatch(setUserInfo(JSON.parse(localStorage.getItem('userInfo'))));
+
+  try {
+    const parsedUserInfo = JSON.parse(userInfo);
+    if (parsedUserInfo) {
+      store.dispatch(setUserInfo(parsedUserInfo));
+    }
+  } catch (error) {
+    console.error('Failed to parse user info from localStorage:', error);
+  }
+} else {
+  setAuthToken(null);
 }
 
 ReactDOM.render(
@@ -21,4 +33,3 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root')
 );
-
